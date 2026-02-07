@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AgriHealth</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00d4aa",
+                        "primary-dark": "#00b899",
+                        "background-light": "#0a1628",
+                        "background-dark": "#050d18",
+                        "surface-light": "#111c2d",
+                        "surface-dark": "#0d1520",
+                        "accent": "#7c3aed",
+                        "accent-light": "#a78bfa",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "2xl": "4rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+        
+        /* Glassmorphism effect */
+        .glass {
+            background: rgba(17, 28, 45, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Button glow effect */
+        .btn-glow {
+            box-shadow: 0 0 30px rgba(0, 212, 170, 0.4), 0 0 60px rgba(0, 212, 170, 0.2);
+            transition: all 0.4s ease;
+        }
+        
+        .btn-glow:hover {
+            box-shadow: 0 0 40px rgba(0, 212, 170, 0.6), 0 0 80px rgba(0, 212, 170, 0.3);
+            transform: translateY(-3px) scale(1.02);
+        }
+        
+        .btn-glow:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #00d4aa 0%, #7c3aed 50%, #00d4aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: gradient-shift 4s ease infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Pulse animation for stats */
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: scale(1.05);
+            background: rgba(0, 212, 170, 0.1);
+            border-radius: 1rem;
+        }
+        
+        /* Navigation button effects */
+        .nav-btn {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-5px);
+        }
+        
+        .nav-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: #00d4aa;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00d4aa;
+        }
+        
+        /* Hero image overlay animation */
+        .hero-overlay {
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.2) 0%, rgba(124, 58, 237, 0.2) 100%);
+        }
+        
+        /* Shimmer effect */
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+    </style>
+  </head>
+<body class="bg-background-light font-display min-h-screen flex flex-col antialiased">
+<!-- Main Container - FULL SCREEN -->
+<div class="relative flex flex-col w-full h-full min-h-screen overflow-hidden bg-background-light">
+<!-- Header Overlay -->
+<header class="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-8 py-6 lg:px-16 lg:py-8">
+<h2 class="gradient-text text-2xl lg:text-3xl font-extrabold tracking-tight drop-shadow-md floating">AgriHealth</h2>
+<button class="flex items-center justify-center w-12 h-12 rounded-full glass text-primary hover:text-white hover:bg-primary/30 transition-all duration-300">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</button>
+</header>
+<!-- Hero Image Section -->
+<div class="relative h-[50vh] lg:h-[60vh] w-full shrink-0">
+<!-- Background Image -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center" data-alt="Vibrant green corn field under sunlight" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB6a62nEos_5pxb8Ft4XxnY7og9aMvMGF34i0Av6XtQul8M5--S9wBSiiFex22o5WaOfTWu3ZeX7rS-9owYNvemMBFwlFjhqLL_92H9UuD69AUMfq62fhMrzWlmmpJtrmIvY2_Ohf_LXs9pLtNCfuXdBpKH1Pa2KVJK5F2X4AcaCMD5XSDU3LBRNQaDtlkGpngFQWd1HEGH59f2SvGyCT1thXWAyTDbKrBfjcNMRQ_NEixlTISMDCcP2XoQC4V0MTVw7-oCIPw7kR0');">
+</div>
+<!-- Gradient Overlay for text readability at top -->
+<div class="absolute inset-0 bg-gradient-to-b from-background-light/90 via-background-light/30 to-transparent"></div>
+<!-- Color overlay -->
+<div class="absolute inset-0 hero-overlay"></div>
+</div>
+<!-- Content Card Section -->
+<div class="relative flex-1 -mt-16 glass rounded-t-[3rem] px-8 lg:px-16 pt-10 pb-8 flex flex-col z-10">
+<!-- Handle bar decoration -->
+<div class="w-16 h-1.5 bg-gradient-to-r from-primary to-accent rounded-full mx-auto mb-8"></div>
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between h-full gap-8">
+<div class="lg:max-w-2xl">
+<span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 text-primary text-sm font-bold uppercase tracking-wider mb-6 shimmer">
+<span class="material-symbols-outlined text-lg">eco</span>
+                        AI Detection
+                    </span>
+<h1 class="text-4xl lg:text-6xl font-extrabold text-white leading-[1.1] mb-6 tracking-tight">
+                        Protect Your Crops with <span class="gradient-text">Precision</span>
+                    </h1>
+<p class="text-gray-400 text-lg lg:text-xl leading-relaxed font-normal max-w-xl">
+                        Instantly detect diseases, analyze soil health, and get treatment recommendations directly from your phone.
+                    </p>
+</div>
+<div class="mt-8 lg:mt-0 space-y-6 lg:min-w-[400px]">
+<!-- Stats / Quick Info Row -->
+<div class="flex items-center justify-between py-6 px-4 glass rounded-2xl mb-4">
+<div class="flex flex-col items-center stat-card p-3">
+<span class="text-3xl lg:text-4xl font-bold text-primary">98%</span>
+<span class="text-sm text-gray-400">Accuracy</span>
+</div>
+<div class="w-px h-12 bg-gradient-to-b from-transparent via-primary/50 to-transparent"></div>
+<div class="flex flex-col items-center stat-card p-3">
+<span class="text-3xl lg:text-4xl font-bold text-primary">2s</span>
+<span class="text-sm text-gray-400">Scan Time</span>
+</div>
+<div class="w-px h-12 bg-gradient-to-b from-transparent via-primary/50 to-transparent"></div>
+<div class="flex flex-col items-center stat-card p-3">
+<span class="text-3xl lg:text-4xl font-bold text-primary">50+</span>
+<span class="text-sm text-gray-400">Crops</span>
+</div>
+</div>
+<!-- Primary Action -->
+<a href="second.html" class="group relative flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-16 bg-gradient-to-r from-primary to-accent btn-glow">
+<span class="relative z-10 text-white text-lg font-bold tracking-wide flex items-center gap-3">
+<span class="material-symbols-outlined text-2xl">document_scanner</span>
+                            Start Analysis
+                        </span>
+</a>
+<!-- Secondary Action / Link -->
+<div class="flex justify-center pt-2">
+<a class="text-sm font-semibold text-gray-400 hover:text-primary transition-colors duration-300 flex items-center gap-2" href="#">
+                            <span class="material-symbols-outlined text-lg">history</span>
+                            View Analysis History
+                        </a>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="glass border-t border-white/10 px-8 lg:px-16 py-4 flex justify-center items-center gap-16 lg:gap-24 pb-6">
+<button class="nav-btn active flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="text-xs font-semibold">Home</span>
+</button>
+<button class="nav-btn flex flex-col items-center gap-1 text-gray-500 hover:text-primary transition-all duration-300">
+<span class="material-symbols-outlined text-2xl">history</span>
+<span class="text-xs font-semibold">History</span>
+</button>
+<button class="nav-btn flex flex-col items-center gap-1 text-gray-500 hover:text-primary transition-all duration-300">
+<span class="material-symbols-outlined text-2xl">info</span>
+<span class="text-xs font-semibold">About</span>
+</button>
+<button class="nav-btn flex flex-col items-center gap-1 text-gray-500 hover:text-primary transition-all duration-300">
+<span class="material-symbols-outlined text-2xl">person</span>
+<span class="text-xs font-semibold">Profile</span>
+</button>
+</div>
+</div>
+</body></html>
