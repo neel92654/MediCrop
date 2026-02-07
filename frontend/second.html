@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Upload &amp; Tips - Agricultural Health</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00d4aa",
+                        "primary-dark": "#00b899",
+                        "background-light": "#0a1628",
+                        "background-dark": "#050d18",
+                        "text-main": "#ffffff",
+                        "text-secondary": "#9ca3af",
+                        "surface-light": "#111c2d",
+                        "surface-dark": "#0d1520",
+                        "accent": "#7c3aed",
+                        "accent-light": "#a78bfa",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "1.5rem", "xl": "2rem", "2xl": "2.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: "Public Sans", sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+        
+        /* Glassmorphism effect */
+        .glass {
+            background: rgba(17, 28, 45, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Button glow effect */
+        .btn-glow {
+            box-shadow: 0 0 30px rgba(0, 212, 170, 0.4), 0 0 60px rgba(0, 212, 170, 0.2);
+            transition: all 0.4s ease;
+        }
+        
+        .btn-glow:hover {
+            box-shadow: 0 0 40px rgba(0, 212, 170, 0.6), 0 0 80px rgba(0, 212, 170, 0.3);
+            transform: translateY(-3px) scale(1.02);
+        }
+        
+        .btn-glow:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #00d4aa 0%, #7c3aed 50%, #00d4aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: gradient-shift 4s ease infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* Upload zone hover effects */
+        .upload-zone {
+            transition: all 0.4s ease;
+            border: 2px dashed rgba(0, 212, 170, 0.3);
+        }
+        
+        .upload-zone:hover {
+            border-color: #00d4aa;
+            box-shadow: 0 0 40px rgba(0, 212, 170, 0.2);
+            transform: scale(1.01);
+        }
+        
+        /* Action button effects */
+        .action-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 170, 0.3);
+        }
+        
+        .action-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        /* Tip card effects */
+        .tip-card {
+            transition: all 0.3s ease;
+        }
+        
+        .tip-card:hover {
+            transform: translateX(10px);
+            border-left: 3px solid #00d4aa;
+        }
+        
+        /* Crop card effects */
+        .crop-card {
+            transition: all 0.3s ease;
+        }
+        
+        .crop-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 170, 0.2);
+        }
+        
+        /* Disease card effects */
+        .disease-card {
+            transition: all 0.3s ease;
+        }
+        
+        .disease-card:hover {
+            transform: scale(1.02);
+            border-left: 3px solid #00d4aa;
+        }
+        
+        /* Shimmer effect */
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        /* Pulse animation for icon */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 170, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 170, 0.6); }
+        }
+        
+        .pulse-icon {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        /* Hide file inputs */
+        .hidden-input {
+            display: none;
+        }
+        
+        /* Preview image */
+        .preview-container {
+            display: none;
+        }
+        
+        .preview-container.active {
+            display: flex;
+        }
+    </style>
+  </head>
+<body class="bg-background-light text-text-main min-h-screen flex flex-col antialiased selection:bg-primary/30">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-10 flex items-center justify-between px-6 lg:px-16 py-4 glass">
+<button class="flex items-center justify-center w-12 h-12 rounded-full hover:bg-primary/20 transition-all duration-300 text-primary">
+<span class="material-symbols-outlined text-[28px]">arrow_back</span>
+</button>
+<h1 class="gradient-text text-xl lg:text-2xl font-extrabold tracking-tight text-center flex-1">New Detection</h1>
+<div class="w-12"></div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col p-6 lg:p-16 gap-8 w-full">
+<!-- Hidden File Inputs -->
+<input type="file" id="galleryInput" class="hidden-input" accept="image/*">
+<input type="file" id="cameraInput" class="hidden-input" accept="image/*" capture="environment">
+
+<!-- Upload Zone -->
+<section class="flex flex-col lg:flex-row gap-8">
+<div class="upload-zone group relative flex flex-col items-center justify-center gap-6 rounded-[2rem] glass px-8 py-12 cursor-pointer lg:flex-1" onclick="document.getElementById('galleryInput').click()">
+<!-- Background decorative element -->
+<div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 rounded-[2rem] transition-opacity"></div>
+<div class="relative flex flex-col items-center gap-4 z-10">
+<div class="w-20 h-20 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-primary mb-2 pulse-icon">
+<span class="material-symbols-outlined text-[40px]">add_a_photo</span>
+</div>
+<h2 class="text-2xl lg:text-3xl font-bold leading-tight text-center text-white">Upload Plant Sample</h2>
+<p class="text-text-secondary text-base text-center max-w-[320px]">
+                        Tap to take a high-quality photo or select an existing one from your gallery.
+                    </p>
+</div>
+<div class="relative z-10 flex gap-4 w-full max-w-[320px]">
+<button onclick="event.stopPropagation(); document.getElementById('galleryInput').click();" class="action-btn flex-1 h-12 flex items-center justify-center gap-2 rounded-full glass text-primary text-sm font-bold hover:bg-primary/20 transition-all duration-300">
+<span class="material-symbols-outlined text-[22px]">image</span>
+                        Gallery
+                    </button>
+<button onclick="event.stopPropagation(); document.getElementById('cameraInput').click();" class="action-btn flex-1 h-12 flex items-center justify-center gap-2 rounded-full glass text-accent-light text-sm font-bold hover:bg-accent/20 transition-all duration-300">
+<span class="material-symbols-outlined text-[22px]">camera_alt</span>
+                        Camera
+                    </button>
+</div>
+<!-- Preview Container -->
+<div id="previewContainer" class="preview-container relative z-10 w-full max-w-[400px] mt-4 flex-col items-center gap-3">
+<img id="previewImage" class="w-full h-48 object-cover rounded-2xl border-2 border-primary/30" src="" alt="Preview">
+<p id="fileName" class="text-sm text-primary font-medium"></p>
+</div>
+</div>
+<!-- File Status -->
+<div class="mt-3 flex items-center justify-center gap-2 lg:hidden">
+<span class="material-symbols-outlined text-[18px] text-primary">info</span>
+<span class="text-sm font-medium text-text-secondary">Supported formats: JPG, PNG</span>
+</div>
+<!-- Tips Section -->
+<section class="flex flex-col gap-6 lg:flex-1">
+<h3 class="text-xl lg:text-2xl font-bold px-1 text-white">Tips for <span class="gradient-text">Success</span></h3>
+<div class="grid gap-4">
+<!-- Tip 1 -->
+<div class="tip-card flex items-start gap-4 p-5 rounded-2xl glass">
+<div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500/20 to-orange-600/20 flex items-center justify-center shrink-0 text-orange-400">
+<span class="material-symbols-outlined text-[24px]">wb_sunny</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-base font-bold text-white">Natural Light</span>
+<span class="text-sm text-text-secondary leading-relaxed">Avoid harsh shadows. Use daylight for the most accurate detection results.</span>
+</div>
+</div>
+<!-- Tip 2 -->
+<div class="tip-card flex items-start gap-4 p-5 rounded-2xl glass">
+<div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center shrink-0 text-blue-400">
+<span class="material-symbols-outlined text-[24px]">center_focus_strong</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-base font-bold text-white">Sharp Focus</span>
+<span class="text-sm text-text-secondary leading-relaxed">Ensure the affected area is sharp and clearly visible in the frame.</span>
+</div>
+</div>
+<!-- Tip 3 -->
+<div class="tip-card flex items-start gap-4 p-5 rounded-2xl glass">
+<div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px]">eco</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-base font-bold text-white">Single Leaf</span>
+<span class="text-sm text-text-secondary leading-relaxed">Capture one leaf at a time. Too many leaves can confuse the AI model.</span>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+<!-- Common Diseases Section -->
+<section class="flex flex-col gap-6">
+<h3 class="text-xl lg:text-2xl font-bold px-1 text-white">Common <span class="gradient-text">Diseases</span></h3>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+<!-- Disease 1 -->
+<div class="disease-card flex flex-col items-center gap-3 p-4 rounded-2xl glass cursor-pointer hover:bg-red-500/10 transition-all duration-300">
+<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-red-500/30 to-red-600/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px] text-red-400">coronavirus</span>
+</div>
+<div class="flex flex-col gap-1 text-center">
+<span class="text-sm font-bold text-white">Leaf Blight</span>
+<span class="text-xs text-text-secondary">Wheat, Corn</span>
+</div>
+</div>
+<!-- Disease 2 -->
+<div class="disease-card flex flex-col items-center gap-3 p-4 rounded-2xl glass cursor-pointer hover:bg-yellow-500/10 transition-all duration-300">
+<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-500/30 to-yellow-600/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px] text-yellow-400">bug_report</span>
+</div>
+<div class="flex flex-col gap-1 text-center">
+<span class="text-sm font-bold text-white">Powdery Mildew</span>
+<span class="text-xs text-text-secondary">Grapes, Cucumbers</span>
+</div>
+</div>
+<!-- Disease 3 -->
+<div class="disease-card flex flex-col items-center gap-3 p-4 rounded-2xl glass cursor-pointer hover:bg-orange-500/10 transition-all duration-300">
+<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500/30 to-orange-600/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px] text-orange-400">water_drop</span>
+</div>
+<div class="flex flex-col gap-1 text-center">
+<span class="text-sm font-bold text-white">Rust Disease</span>
+<span class="text-xs text-text-secondary">Wheat, Beans</span>
+</div>
+</div>
+<!-- Disease 4 -->
+<div class="disease-card flex flex-col items-center gap-3 p-4 rounded-2xl glass cursor-pointer hover:bg-purple-500/10 transition-all duration-300">
+<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500/30 to-purple-600/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px] text-purple-400">blur_on</span>
+</div>
+<div class="flex flex-col gap-1 text-center">
+<span class="text-sm font-bold text-white">Black Rot</span>
+<span class="text-xs text-text-secondary">Grapes, Tomatoes</span>
+</div>
+</div>
+<!-- Disease 5 -->
+<div class="disease-card flex flex-col items-center gap-3 p-4 rounded-2xl glass cursor-pointer hover:bg-green-500/10 transition-all duration-300">
+<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500/30 to-green-600/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px] text-green-400">grass</span>
+</div>
+<div class="flex flex-col gap-1 text-center">
+<span class="text-sm font-bold text-white">Bacterial Spot</span>
+<span class="text-xs text-text-secondary">Peppers, Tomatoes</span>
+</div>
+</div>
+<!-- Disease 6 -->
+<div class="disease-card flex flex-col items-center gap-3 p-4 rounded-2xl glass cursor-pointer hover:bg-blue-500/10 transition-all duration-300">
+<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500/30 to-blue-600/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px] text-blue-400">ac_unit</span>
+</div>
+<div class="flex flex-col gap-1 text-center">
+<span class="text-sm font-bold text-white">Late Blight</span>
+<span class="text-xs text-text-secondary">Potatoes, Tomatoes</span>
+</div>
+</div>
+</div>
+</section>
+
+<!-- How It Works Section -->
+<section class="flex flex-col gap-6 pb-4">
+<h3 class="text-xl lg:text-2xl font-bold px-1 text-white">How It <span class="gradient-text">Works</span></h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Step 1 -->
+<div class="relative flex flex-col items-center gap-4 p-6 rounded-2xl glass text-center">
+<div class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center text-white font-bold text-sm">1</div>
+<div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[32px]">photo_camera</span>
+</div>
+<h4 class="text-lg font-bold text-white">Capture</h4>
+<p class="text-sm text-text-secondary">Take a clear photo of the affected plant leaf or area</p>
+</div>
+<!-- Step 2 -->
+<div class="relative flex flex-col items-center gap-4 p-6 rounded-2xl glass text-center">
+<div class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center text-white font-bold text-sm">2</div>
+<div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center text-blue-400">
+<span class="material-symbols-outlined text-[32px]">psychology</span>
+</div>
+<h4 class="text-lg font-bold text-white">AI Analysis</h4>
+<p class="text-sm text-text-secondary">Our AI model analyzes the image to detect diseases</p>
+</div>
+<!-- Step 3 -->
+<div class="relative flex flex-col items-center gap-4 p-6 rounded-2xl glass text-center">
+<div class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center text-white font-bold text-sm">3</div>
+<div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-500/20 to-green-600/20 flex items-center justify-center text-green-400">
+<span class="material-symbols-outlined text-[32px]">healing</span>
+</div>
+<h4 class="text-lg font-bold text-white">Get Treatment</h4>
+<p class="text-sm text-text-secondary">Receive diagnosis and recommended treatment options</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Action -->
+<div class="sticky bottom-0 p-6 lg:px-16 glass pt-6 pb-8 w-full">
+<button id="analyzeBtn" class="w-full lg:max-w-md lg:mx-auto lg:flex h-16 flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-primary to-accent btn-glow text-white text-lg font-bold cursor-pointer">
+<span class="material-symbols-outlined text-[28px]">analytics</span>
+            Analyze Health
+        </button>
+</div>
+
+<!-- AI Loading Modal -->
+<div id="loadingModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-background-light/95 backdrop-blur-xl">
+<div class="flex flex-col items-center gap-8 p-8">
+<!-- AI Brain Animation -->
+<div class="relative">
+<!-- Outer Ring -->
+<div class="w-40 h-40 rounded-full border-4 border-primary/20 flex items-center justify-center animate-pulse">
+<!-- Middle Ring -->
+<div class="w-32 h-32 rounded-full border-4 border-accent/30 flex items-center justify-center ai-ring-1">
+<!-- Inner Ring -->
+<div class="w-24 h-24 rounded-full border-4 border-primary/40 flex items-center justify-center ai-ring-2">
+<!-- AI Icon -->
+<div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center ai-core">
+<span class="material-symbols-outlined text-white text-3xl">psychology</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Scanning Lines -->
+<div class="absolute inset-0 scanning-effect rounded-full"></div>
+<!-- Floating Particles -->
+<div class="particle particle-1"></div>
+<div class="particle particle-2"></div>
+<div class="particle particle-3"></div>
+<div class="particle particle-4"></div>
+</div>
+
+<!-- Loading Text -->
+<div class="text-center">
+<h3 class="text-2xl font-bold text-white mb-2">AI <span class="gradient-text">Analyzing</span></h3>
+<p id="loadingStatus" class="text-gray-400 text-sm">Initializing neural network...</p>
+</div>
+
+<!-- Progress Bar -->
+<div class="w-64 h-2 bg-white/10 rounded-full overflow-hidden">
+<div id="progressBar" class="h-full bg-gradient-to-r from-primary to-accent rounded-full progress-animate"></div>
+</div>
+
+<!-- Processing Steps -->
+<div class="flex flex-col gap-2 w-64">
+<div id="step1" class="flex items-center gap-2 text-gray-500 text-sm">
+<span class="material-symbols-outlined text-lg step-icon">radio_button_unchecked</span>
+<span>Scanning image...</span>
+</div>
+<div id="step2" class="flex items-center gap-2 text-gray-500 text-sm">
+<span class="material-symbols-outlined text-lg step-icon">radio_button_unchecked</span>
+<span>Detecting patterns...</span>
+</div>
+<div id="step3" class="flex items-center gap-2 text-gray-500 text-sm">
+<span class="material-symbols-outlined text-lg step-icon">radio_button_unchecked</span>
+<span>Identifying disease...</span>
+</div>
+<div id="step4" class="flex items-center gap-2 text-gray-500 text-sm">
+<span class="material-symbols-outlined text-lg step-icon">radio_button_unchecked</span>
+<span>Generating report...</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Error Toast -->
+<div id="errorToast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden">
+<div class="flex items-center gap-3 px-6 py-4 rounded-2xl bg-red-500/20 border border-red-500/30 backdrop-blur-xl">
+<span class="material-symbols-outlined text-red-400 text-2xl">error</span>
+<span class="text-red-300 font-medium">Please upload an image first!</span>
+</div>
+</div>
+
+<style>
+/* AI Animation Styles */
+@keyframes ai-rotate-1 {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes ai-rotate-2 {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+@keyframes ai-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(0, 212, 170, 0.5); }
+    50% { transform: scale(1.1); box-shadow: 0 0 60px rgba(0, 212, 170, 0.8); }
+}
+
+@keyframes scanning {
+    0% { 
+        background: linear-gradient(180deg, transparent 0%, rgba(0, 212, 170, 0.3) 50%, transparent 100%);
+        transform: translateY(-100%);
+    }
+    100% { 
+        background: linear-gradient(180deg, transparent 0%, rgba(0, 212, 170, 0.3) 50%, transparent 100%);
+        transform: translateY(100%);
+    }
+}
+
+@keyframes particle-float {
+    0%, 100% { 
+        transform: translate(0, 0) scale(1);
+        opacity: 0;
+    }
+    50% { 
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes progress-fill {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+.ai-ring-1 {
+    animation: ai-rotate-1 3s linear infinite;
+}
+
+.ai-ring-2 {
+    animation: ai-rotate-2 2s linear infinite;
+}
+
+.ai-core {
+    animation: ai-pulse 1.5s ease-in-out infinite;
+}
+
+.scanning-effect {
+    animation: scanning 2s linear infinite;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(135deg, #00d4aa, #7c3aed);
+    border-radius: 50%;
+    animation: particle-float 2s ease-in-out infinite;
+}
+
+.particle-1 { --tx: -60px; --ty: -40px; top: 50%; left: 50%; animation-delay: 0s; }
+.particle-2 { --tx: 60px; --ty: -40px; top: 50%; left: 50%; animation-delay: 0.5s; }
+.particle-3 { --tx: -50px; --ty: 50px; top: 50%; left: 50%; animation-delay: 1s; }
+.particle-4 { --tx: 50px; --ty: 50px; top: 50%; left: 50%; animation-delay: 1.5s; }
+
+.progress-animate {
+    animation: progress-fill 4s ease-out forwards;
+}
+
+.step-complete {
+    color: #00d4aa !important;
+}
+
+.step-complete .step-icon {
+    color: #00d4aa !important;
+}
+
+#loadingModal.flex {
+    display: flex !important;
+}
+</style>
+
+<!-- JavaScript for file handling -->
+<script>
+    const galleryInput = document.getElementById('galleryInput');
+    const cameraInput = document.getElementById('cameraInput');
+    const previewContainer = document.getElementById('previewContainer');
+    const previewImage = document.getElementById('previewImage');
+    const fileName = document.getElementById('fileName');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const loadingModal = document.getElementById('loadingModal');
+    const errorToast = document.getElementById('errorToast');
+    const loadingStatus = document.getElementById('loadingStatus');
+    const progressBar = document.getElementById('progressBar');
+    
+    let isImageUploaded = false;
+    
+    function handleFileSelect(input) {
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                fileName.textContent = file.name;
+                previewContainer.classList.add('active');
+                isImageUploaded = true;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    
+    galleryInput.addEventListener('change', function() {
+        handleFileSelect(this);
+    });
+    
+    cameraInput.addEventListener('change', function() {
+        handleFileSelect(this);
+    });
+    
+    // Show error toast
+    function showError() {
+        errorToast.classList.remove('hidden');
+        errorToast.style.animation = 'none';
+        errorToast.offsetHeight; // Trigger reflow
+        errorToast.style.animation = 'fadeInOut 3s ease forwards';
+        setTimeout(() => {
+            errorToast.classList.add('hidden');
+        }, 3000);
+    }
+    
+    // AI Loading Animation
+    function startAIAnalysis() {
+        loadingModal.classList.remove('hidden');
+        loadingModal.classList.add('flex');
+        
+        const statusMessages = [
+            "Initializing neural network...",
+            "Processing image data...",
+            "Analyzing leaf patterns...",
+            "Detecting anomalies...",
+            "Matching disease signatures...",
+            "Calculating severity level...",
+            "Generating recommendations...",
+            "Finalizing report..."
+        ];
+        
+        let messageIndex = 0;
+        const statusInterval = setInterval(() => {
+            messageIndex = (messageIndex + 1) % statusMessages.length;
+            loadingStatus.textContent = statusMessages[messageIndex];
+        }, 500);
+        
+        // Step animations
+        setTimeout(() => {
+            document.getElementById('step1').classList.add('step-complete');
+            document.getElementById('step1').querySelector('.step-icon').textContent = 'check_circle';
+        }, 1000);
+        
+        setTimeout(() => {
+            document.getElementById('step2').classList.add('step-complete');
+            document.getElementById('step2').querySelector('.step-icon').textContent = 'check_circle';
+        }, 2000);
+        
+        setTimeout(() => {
+            document.getElementById('step3').classList.add('step-complete');
+            document.getElementById('step3').querySelector('.step-icon').textContent = 'check_circle';
+        }, 3000);
+        
+        setTimeout(() => {
+            document.getElementById('step4').classList.add('step-complete');
+            document.getElementById('step4').querySelector('.step-icon').textContent = 'check_circle';
+            loadingStatus.textContent = "Analysis complete!";
+        }, 3800);
+        
+        // Redirect after analysis
+        setTimeout(() => {
+            clearInterval(statusInterval);
+            window.location.href = 'last.html';
+        }, 4500);
+    }
+    
+    // Analyze button click
+    analyzeBtn.addEventListener('click', function() {
+        if (!isImageUploaded) {
+            showError();
+            return;
+        }
+        startAIAnalysis();
+    });
+</script>
+
+<style>
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -20px); }
+    15% { opacity: 1; transform: translate(-50%, 0); }
+    85% { opacity: 1; transform: translate(-50%, 0); }
+    100% { opacity: 0; transform: translate(-50%, -20px); }
+}
+</style>
+</body></html>
