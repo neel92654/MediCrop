@@ -74,7 +74,7 @@ print(f"Confidence: {results['confidence']:.2%}")
 print(f"Severity: {results['severity']}")
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 Input (224×224×3)
@@ -97,7 +97,7 @@ Dense(50, Softmax) ← Output
 - **Loss**: Categorical Cross-Entropy
 - **Metrics**: Accuracy, Top-5 Accuracy
 
-## 🎨 Data Augmentation
+## Data Augmentation
 
 Training augmentation includes:
 - Rotation: ±20 degrees
@@ -107,7 +107,7 @@ Training augmentation includes:
 - Horizontal flip
 - Normalization: [0, 1] rescaling
 
-## ⚕️ Severity Estimation
+## Severity Estimation
 
 Severity is estimated based on prediction confidence:
 
@@ -117,7 +117,7 @@ Severity is estimated based on prediction confidence:
 | 0.5 - 0.8 | **Moderate** | Medium confidence, take action |
 | < 0.5 | **Severe/Uncertain** | Low confidence, needs expert review |
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 plant_health_detection/
@@ -174,7 +174,7 @@ Based on PlantVillage benchmarks:
 - **Training Time**: ~2-4 hours on GPU (30 epochs)
 - **Inference Time**: ~50-100ms per image
 
-## 🔍 Troubleshooting
+## Troubleshooting
 
 **Issue: Out of Memory**
 - Reduce `BATCH_SIZE` in `config.py` (try 16 or 8)
