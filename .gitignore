@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Model files (too large for GitHub)
+*.h5
+*.keras
+models/*.h5
+models/*.keras
+models/plant_health_model.*
+
+# Training outputs
+models/training_history.csv
+models/training_history.png
+models/tensorboard_logs/
+
+# Datasets (too large)
+../plants/
+../pests/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Uploads folder
+uploads/
+*.jpg
+*.jpeg
+*.png
+*.bmp
+
+# Logs
+*.log
+
+# But keep these important files
+!models/.gitkeep
+!README.md
+!requirements*.txt
+!*.py
+!*.md
