@@ -11,6 +11,11 @@ import numpy as np
 from werkzeug.utils import secure_filename
 import tensorflow as tf
 from datetime import datetime
+from dotenv import load_dotenv
+from groq import Groq
+
+# Load environment variables
+load_dotenv()
 
 # Import custom modules
 import config
@@ -36,6 +41,18 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 model = None
 class_mapping = None
 class_names = None
+
+# Initialize Groq client
+groq_client = None
+try:
+    groq_api_key = os.getenv('GROQ_API_KEY')
+    if groq_api_key:
+        groq_client = Groq(api_key=groq_api_key)
+        print("✅ Groq AI client initialized")
+    else:
+        print("⚠️  GROQ_API_KEY not found in .env file")
+except Exception as e:
+    print(f"⚠️  Failed to initialize Groq client: {e}")
 
 
 def allowed_file(filename):
@@ -134,6 +151,91 @@ def predict_image(image_path):
             'success': False,
             'error': str(e)
         }
+
+
+def get_ai_recommendations(disease_name, crop_name, confidence):
+    """
+    Get AI-generated treatment recommendations using Groq
+    
+    Args:
+        disease_name: Name of the detected disease
+        crop_name: Type of crop
+        confidence: Prediction confidence
+        
+    Returns:
+        list: AI-generated recommendations or static fallback
+    """
+    # Static fallback recommendations
+    static_recommendations = [
+        {
+            "title": "Consult Expert",
+            "description": "Seek advice from agricultural extension services",
+            "icon": "groups"
+        },
+        {
+            "title": "Monitor Progress",
+            "description": "Track disease progression daily",
+            "icon": "visibility"
+        }
+    ]
+    
+    if not groq_client:
+        return static_recommendations
+    
+    try:
+        # Create prompt for Groq
+        prompt = f"""You are an expert agricultural advisor. A farmer has detected {disease_name} on their {crop_name} crop with {confidence*100:.1f}% confidence.
+
+Provide exactly 3 concise, actionable treatment recommendations. Each recommendation should be 1-2 sentences maximum.
+
+Format your response as a JSON array with this exact structure:
+[
+  {{
+    "title": "Short Action Title",
+    "description": "Brief 1-2 sentence description",
+    "icon": "medication_liquid" or "air" or "content_cut" or "water_drop" or "agriculture"
+  }}
+]
+
+Only return the JSON array, nothing else."""
+        
+        # Call Groq API
+        response = groq_client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are an expert agricultural disease management advisor. Provide only JSON formatted responses."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            model="llama-3.3-70b-versatile",  # Fast and capable model
+            temperature=0.7,
+            max_tokens=500
+        )
+        
+        # Parse response
+        ai_content = response.choices[0].message.content.strip()
+        
+        # Try to extract JSON if wrapped in markdown code blocks
+        if "```json" in ai_content:
+            ai_content = ai_content.split("```json")[1].split("```")[0].strip()
+        elif "```" in ai_content:
+            ai_content = ai_content.split("```")[1].split("```")[0].strip()
+        
+        recommendations = json.loads(ai_content)
+        
+        # Validate response is a list with expected structure
+        if isinstance(recommendations, list) and len(recommendations) > 0:
+            return recommendations
+        else:
+            return static_recommendations
+            
+    except Exception as e:
+        print(f"⚠️  Groq API error: {e}")
+        return static_recommendations
 
 
 # ==================== API ENDPOINTS ====================
@@ -260,6 +362,16 @@ def predict():
         
         # Make prediction
         result = predict_image(filepath)
+        
+        # Add AI recommendations if prediction successful
+        if result['success']:
+            disease_name = result['prediction']['class']
+            crop_name = result['prediction']['raw_class'].split('___')[0] if '___' in result['prediction']['raw_class'] else 'Unknown'
+            confidence = result['prediction']['confidence']
+            
+            # Get AI recommendations
+            ai_recommendations = get_ai_recommendations(disease_name, crop_name, confidence)
+            result['recommendations'] = ai_recommendations
         
         # Optionally delete uploaded file after prediction
         # os.remove(filepath)

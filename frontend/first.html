@@ -93,7 +93,7 @@
         }
         
         .floating {
-            animation: float 3s ease-in-out infinite;
+            animation: float 2s ease-in-out infinite;
         }
         
         /* Pulse animation for stats */
@@ -159,12 +159,222 @@
     </style>
   </head>
 <body class="bg-background-light font-display min-h-screen flex flex-col antialiased">
+
+<!-- Sidebar Overlay -->
+<div id="sidebarOverlay" class="fixed inset-0 bg-black/60 z-40 hidden transition-opacity duration-300" onclick="closeSidebar()"></div>
+
+<!-- Sidebar -->
+<div id="sidebar" class="fixed top-0 left-0 h-full w-80 bg-background-dark z-50 transform -translate-x-full transition-transform duration-300 flex flex-col">
+    <!-- Sidebar Header -->
+    <div class="flex items-center justify-between px-6 py-6 border-b border-white/10">
+        <h3 class="gradient-text text-xl font-bold">Menu</h3>
+        <button onclick="closeSidebar()" class="w-10 h-10 rounded-full glass flex items-center justify-center text-primary hover:bg-primary/30 transition-all">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+    </div>
+    
+    <!-- Sidebar Menu Items -->
+    <div class="flex-1 overflow-y-auto py-4">
+        <!-- History Button -->
+        <button onclick="showHistory()" class="w-full flex items-center gap-4 px-6 py-4 text-white hover:bg-primary/20 transition-all duration-300">
+            <span class="material-symbols-outlined text-primary text-2xl">history</span>
+            <div class="text-left">
+                <span class="font-semibold block">History</span>
+                <span class="text-xs text-gray-400">View uploaded diseases</span>
+            </div>
+            <span class="material-symbols-outlined text-gray-500 ml-auto">chevron_right</span>
+        </button>
+        
+        <!-- Account Button -->
+        <button onclick="showAccount()" class="w-full flex items-center gap-4 px-6 py-4 text-white hover:bg-primary/20 transition-all duration-300">
+            <span class="material-symbols-outlined text-primary text-2xl">account_circle</span>
+            <div class="text-left">
+                <span class="font-semibold block">Account</span>
+                <span class="text-xs text-gray-400">View profile details</span>
+            </div>
+            <span class="material-symbols-outlined text-gray-500 ml-auto">chevron_right</span>
+        </button>
+    </div>
+</div>
+
+<!-- History Modal -->
+<div id="historyModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-background-dark rounded-3xl w-full max-w-md max-h-[80vh] overflow-hidden flex flex-col">
+        <!-- History Header -->
+        <div class="flex items-center justify-between px-6 py-5 border-b border-white/10">
+            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">history</span>
+                Analysis History
+            </h3>
+            <button onclick="closeHistory()" class="w-10 h-10 rounded-full glass flex items-center justify-center text-primary hover:bg-primary/30 transition-all">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        
+        <!-- History Content -->
+        <div class="flex-1 overflow-y-auto p-6">
+            <!-- Stats Summary -->
+            <div class="glass rounded-2xl p-4 mb-6">
+                <div class="flex justify-between items-center">
+                    <div class="text-center flex-1">
+                        <span id="totalUploads" class="text-3xl font-bold text-primary">0</span>
+                        <p class="text-xs text-gray-400">Total Uploads</p>
+                    </div>
+                    <div class="w-px h-12 bg-primary/30"></div>
+                    <div class="text-center flex-1">
+                        <span id="diseasesFound" class="text-3xl font-bold text-red-400">0</span>
+                        <p class="text-xs text-gray-400">Diseases Found</p>
+                    </div>
+                    <div class="w-px h-12 bg-primary/30"></div>
+                    <div class="text-center flex-1">
+                        <span id="healthyPlants" class="text-3xl font-bold text-green-400">0</span>
+                        <p class="text-xs text-gray-400">Healthy</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- History List -->
+            <div id="historyList" class="space-y-4">
+                <div class="text-center text-gray-500 py-8">
+                    <span class="material-symbols-outlined text-5xl mb-2">folder_open</span>
+                    <p>No history found</p>
+                    <p class="text-sm">Start scanning to see your history</p>
+                </div>
+            </div>
+            
+            <!-- Suggestions -->
+            <div class="mt-6 glass square-2xl p-4">
+                <h4 class="font-semibold text-primary mb-3 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">lightbulb</span>
+                    Suggestions
+                </h4>
+                <ul id="suggestions" class="text-sm text-gray-300 space-y-2">
+                    <li class="flex items-start gap-2">
+                        <span class="text-primary">•</span>
+                        Regular scanning helps early disease detection
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-primary">•</span>
+                        Keep photos in good lighting for better accuracy
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-primary">•</span>
+                        Follow treatment recommendations promptly
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Account Modal -->
+<div id="accountModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-background-dark rounded-3xl w-full max-w-md max-h-[80vh] overflow-hidden flex flex-col">
+        <!-- Account Header -->
+        <div class="flex items-center justify-between px-6 py-5 border-b border-white/10">
+            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">account_circle</span>
+                Account Details
+            </h3>
+            <button onclick="closeAccount()" class="w-10 h-10 rounded-full glass flex items-center justify-center text-primary hover:bg-primary/30 transition-all">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        
+        <!-- Account Content -->
+        <div class="flex-1 overflow-y-auto p-6">
+            <!-- Profile Photo -->
+            <div class="flex flex-col items-center mb-6">
+                <div id="profilePhoto" class="w-28 h-28 rounded-2xl bg-primary/20 flex items-center justify-center overflow-hidden border-4 border-primary/30 mb-4 shadow-lg">
+                    <span class="material-symbols-outlined text-6xl text-primary">person</span>
+                </div>
+                <h4 id="holderName" class="text-xl font-bold text-white">Guest User</h4>
+                <p id="userEmail" class="text-sm text-gray-400">Not logged in</p>
+            </div>
+            
+            <!-- Account Info -->
+            <div class="glass square-2xl p-4 mb-4">
+                <h4 class="font-semibold text-primary mb-3 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">badge</span>
+                    Personal Details
+                </h4>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3 p-2 rounded-xl bg-white/5">
+                        <span class="material-symbols-outlined text-primary">person</span>
+                        <div class="flex-1">
+                            <p class="text-xs text-gray-500">Full Name</p>
+                            <p id="fullName" class="text-white font-medium">Farmer User</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-2 rounded-xl bg-white/5">
+                        <span class="material-symbols-outlined text-primary">call</span>
+                        <div class="flex-1">
+                            <p class="text-xs text-gray-500">Phone Number</p>
+                            <p id="phoneNumber" class="text-white font-medium">+91 9876543210</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-2 rounded-xl bg-white/5">
+                        <span class="material-symbols-outlined text-primary">home</span>
+                        <div class="flex-1">
+                            <p class="text-xs text-gray-500">Address</p>
+                            <p id="userAddress" class="text-white font-medium">Village Road, Near Temple</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-2 rounded-xl bg-white/5">
+                        <span class="material-symbols-outlined text-primary">location_on</span>
+                        <div class="flex-1">
+                            <p class="text-xs text-gray-500">Location</p>
+                            <p id="userLocation" class="text-white font-medium">Lucknow, Uttar Pradesh</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Account Stats -->
+            <div class="glass square-2xl p-4 mb-4">
+                <h4 class="font-semibold text-primary mb-3 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">analytics</span>
+                    Activity Stats
+                </h4>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Member Since</span>
+                        <span id="memberSince" class="text-white font-semibold">-</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Total Scans</span>
+                        <span id="accountTotalScans" class="text-primary font-semibold">0</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Last Active</span>
+                        <span id="lastActive" class="text-white font-semibold">-</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Uploaded Photos Gallery -->
+            <div class="glass square-2xl p-4">
+                <h4 class="font-semibold text-primary mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">photo_library</span>
+                    Uploaded Photos
+                </h4>
+                <div id="photoGallery" class="grid grid-cols-3 gap-2">
+                    <div class="text-center text-gray-500 col-span-3 py-6">
+                        <span class="material-symbols-outlined text-4xl mb-2">image</span>
+                        <p class="text-sm">No photos uploaded yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Main Container - FULL SCREEN -->
 <div class="relative flex flex-col w-full h-full min-h-screen overflow-hidden bg-background-light">
 <!-- Header Overlay -->
 <header class="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-8 py-6 lg:px-16 lg:py-8">
 <h2 class="gradient-text text-2xl lg:text-3xl font-extrabold tracking-tight drop-shadow-md floating">AgriHealth</h2>
-<button class="flex items-center justify-center w-12 h-12 rounded-full glass text-primary hover:text-white hover:bg-primary/30 transition-all duration-300">
+<button onclick="openSidebar()" class="flex items-center justify-center w-12 h-12 rounded-full glass text-primary hover:text-white hover:bg-primary/30 transition-all duration-300">
 <span class="material-symbols-outlined text-2xl">menu</span>
 </button>
 </header>
@@ -250,4 +460,194 @@
 </button>
 </div>
 </div>
+
+<script>
+// Sidebar Functions
+function openSidebar() {
+    document.getElementById('sidebar').classList.remove('-translate-x-full');
+    document.getElementById('sidebarOverlay').classList.remove('hidden');
+}
+
+function closeSidebar() {
+    document.getElementById('sidebar').classList.add('-translate-x-full');
+    document.getElementById('sidebarOverlay').classList.add('hidden');
+}
+
+// History Functions
+function showHistory() {
+    closeSidebar();
+    document.getElementById('historyModal').classList.remove('hidden');
+    loadHistory();
+}
+
+function closeHistory() {
+    document.getElementById('historyModal').classList.add('hidden');
+}
+
+function loadHistory() {
+    const history = JSON.parse(localStorage.getItem('analysisHistory') || '[]');
+    const totalUploads = history.length;
+    const diseasesFound = history.filter(item => item.hasDisease).length;
+    const healthyPlants = history.filter(item => !item.hasDisease).length;
+    
+    document.getElementById('totalUploads').textContent = totalUploads;
+    document.getElementById('diseasesFound').textContent = diseasesFound;
+    document.getElementById('healthyPlants').textContent = healthyPlants;
+    
+    const historyList = document.getElementById('historyList');
+    
+    if (history.length === 0) {
+        historyList.innerHTML = `
+            <div class="text-center text-gray-500 py-8">
+                <span class="material-symbols-outlined text-5xl mb-2">folder_open</span>
+                <p>No history found</p>
+                <p class="text-sm">Start scanning to see your history</p>
+            </div>
+        `;
+    } else {
+        historyList.innerHTML = history.map((item, index) => `
+            <div class="glass rounded-xl p-4 flex gap-4 items-center">
+                <img src="${item.image}" alt="Scan ${index + 1}" class="w-16 h-16 rounded-lg object-cover">
+                <div class="flex-1">
+                    <p class="font-semibold text-white">${item.cropName || 'Unknown Crop'}</p>
+                    <p class="text-sm ${item.hasDisease ? 'text-red-400' : 'text-green-400'}">
+                        ${item.hasDisease ? item.diseaseName : 'Healthy'}
+                    </p>
+                    <p class="text-xs text-gray-500">${item.date}</p>
+                </div>
+                <span class="material-symbols-outlined ${item.hasDisease ? 'text-red-400' : 'text-green-400'}">
+                    ${item.hasDisease ? 'warning' : 'check_circle'}
+                </span>
+            </div>
+        `).join('');
+    }
+    
+    // Update suggestions based on history
+    updateSuggestions(history);
+}
+
+function updateSuggestions(history) {
+    const suggestions = document.getElementById('suggestions');
+    const diseasedCount = history.filter(item => item.hasDisease).length;
+    
+    let suggestionList = [
+        { text: 'Regular scanning helps early disease detection' },
+        { text: 'Keep photos in good lighting for better accuracy' },
+        { text: 'Follow treatment recommendations promptly' }
+    ];
+    
+    if (diseasedCount > 0) {
+        suggestionList.unshift({ text: `You have ${diseasedCount} disease(s) detected. Check treatment options!` });
+    }
+    
+    if (history.length > 5) {
+        suggestionList.push({ text: 'Great job! Keep monitoring your crops regularly.' });
+    }
+    
+    suggestions.innerHTML = suggestionList.map(s => `
+        <li class="flex items-start gap-2">
+            <span class="text-primary">•</span>
+            ${s.text}
+        </li>
+    `).join('');
+}
+
+// Account Functions
+function showAccount() {
+    closeSidebar();
+    document.getElementById('accountModal').classList.remove('hidden');
+    loadAccount();
+}
+
+function closeAccount() {
+    document.getElementById('accountModal').classList.add('hidden');
+}
+
+function loadAccount() {
+    const account = JSON.parse(localStorage.getItem('userAccount') || '{}');
+    const history = JSON.parse(localStorage.getItem('analysisHistory') || '[]');
+    
+    // Set holder name
+    const holderName = account.name || 'Guest User';
+    document.getElementById('holderName').textContent = holderName;
+    
+    // Set email
+    const userEmail = account.email || 'Not logged in';
+    document.getElementById('userEmail').textContent = userEmail;
+    
+    // Set profile photo
+    const profilePhoto = document.getElementById('profilePhoto');
+    if (account.photo) {
+        profilePhoto.innerHTML = `<img src="${account.photo}" alt="Profile" class="w-full h-full object-cover rounded-2xl">`;
+    } else {
+        profilePhoto.innerHTML = `<span class="material-symbols-outlined text-6xl text-primary">person</span>`;
+    }
+    
+    // Set personal details
+    document.getElementById('fullName').textContent = account.name || 'Farmer User';
+    document.getElementById('phoneNumber').textContent = account.phone || '+91 9876543210';
+    document.getElementById('userAddress').textContent = account.address || 'Village Road, Near Temple';
+    document.getElementById('userLocation').textContent = account.location || 'Lucknow, Uttar Pradesh';
+    
+    // Set member since
+    const memberSince = account.joinDate || new Date().toLocaleDateString();
+    document.getElementById('memberSince').textContent = memberSince;
+    
+    // Set total scans
+    document.getElementById('accountTotalScans').textContent = history.length;
+    
+    // Set last active
+    const lastActive = history.length > 0 ? history[history.length - 1].date : 'Never';
+    document.getElementById('lastActive').textContent = lastActive;
+    
+    // Load photo gallery
+    loadPhotoGallery(history);
+}
+
+function loadPhotoGallery(history) {
+    const gallery = document.getElementById('photoGallery');
+    
+    if (history.length === 0) {
+        gallery.innerHTML = `
+            <div class="text-center text-gray-500 col-span-3 py-6">
+                <span class="material-symbols-outlined text-4xl mb-2">image</span>
+                <p class="text-sm">No photos uploaded yet</p>
+            </div>
+        `;
+    } else {
+        gallery.innerHTML = history.map((item, index) => `
+            <div class="relative aspect-square rounded-xl overflow-hidden border border-white/10">
+                <img src="${item.image}" alt="Photo ${index + 1}" class="w-full h-full object-cover">
+                <div class="absolute bottom-0 left-0 right-0 bg-black/60 p-1 text-center">
+                    <span class="text-xs ${item.hasDisease ? 'text-red-400' : 'text-green-400'}">
+                        ${item.hasDisease ? '⚠️' : '✓'}
+                    </span>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+// Initialize demo data (remove in production)
+function initDemoData() {
+    let account = JSON.parse(localStorage.getItem('userAccount') || '{}');
+    
+    // Check if account needs to be updated with new fields
+    if (!account.name || !account.phone || !account.address || !account.location) {
+        account = {
+            name: account.name || 'Farmer User',
+            email: account.email || 'farmer@example.com',
+            phone: account.phone || '+91 9876543210',
+            address: account.address || 'Village Road, Near Temple',
+            location: account.location || 'Lucknow, Uttar Pradesh',
+            joinDate: account.joinDate || new Date().toLocaleDateString(),
+            photo: account.photo || null
+        };
+        localStorage.setItem('userAccount', JSON.stringify(account));
+    }
+}
+
+// Run on page load
+initDemoData();
+</script>
 </body></html>

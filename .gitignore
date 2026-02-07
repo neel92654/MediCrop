@@ -1,3 +1,6 @@
+# Environment variables (contains API keys)
+.env
+
 # Python
 __pycache__/
 *.py[cod]
@@ -9,34 +12,9 @@ dist/
 build/
 
 # Virtual Environment
-.venv/
 venv/
+.venv/
 ENV/
-env/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# Model files (too large for GitHub)
-*.h5
-*.keras
-models/*.h5
-models/*.keras
-models/plant_health_model.*
-
-# Training outputs
-models/training_history.csv
-models/training_history.png
-models/tensorboard_logs/
-
-# Datasets (too large)
-../plants/
-../pests/
-
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
 
 # IDE
 .vscode/
@@ -44,19 +22,22 @@ models/tensorboard_logs/
 *.swp
 *.swo
 
-# Uploads folder
-uploads/
-*.jpg
-*.jpeg
-*.png
-*.bmp
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads
+uploads/*.jpg
+uploads/*.png
+uploads/*.jpeg
+uploads/*.bmp
+
+# Keep uploads directory but ignore images
+!uploads/.gitkeep
+
+# Model files (too large for git)
+*.h5
+*.keras
 
 # Logs
 *.log
-
-# But keep these important files
-!models/.gitkeep
-!README.md
-!requirements*.txt
-!*.py
-!*.md

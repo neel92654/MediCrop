@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Agricultural Health Analysis</title>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Agricultural Health Analysis</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="load_results.js" defer></script>
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -40,19 +48,20 @@
             },
         }
     </script>
-<style>
+    <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        html, body {
+
+        html,
+        body {
             width: 100%;
             height: 100%;
             overflow-x: hidden;
         }
-        
+
         /* Glassmorphism effect */
         .glass {
             background: rgba(17, 28, 45, 0.7);
@@ -60,22 +69,22 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
+
         /* Button glow effect */
         .btn-glow {
             box-shadow: 0 0 30px rgba(0, 212, 170, 0.4), 0 0 60px rgba(0, 212, 170, 0.2);
             transition: all 0.4s ease;
         }
-        
+
         .btn-glow:hover {
             box-shadow: 0 0 40px rgba(0, 212, 170, 0.6), 0 0 80px rgba(0, 212, 170, 0.3);
             transform: translateY(-3px) scale(1.02);
         }
-        
+
         .btn-glow:active {
             transform: translateY(0) scale(0.98);
         }
-        
+
         /* Gradient text */
         .gradient-text {
             background: linear-gradient(135deg, #00d4aa 0%, #7c3aed 50%, #00d4aa 100%);
@@ -85,226 +94,267 @@
             background-size: 200% 200%;
             animation: gradient-shift 4s ease infinite;
         }
-        
+
         @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
         }
-        
+
         /* Card hover effects */
         .action-card {
             transition: all 0.3s ease;
         }
-        
+
         .action-card:hover {
             transform: translateX(10px);
             border-left: 3px solid #00d4aa;
         }
-        
+
         /* Pulse animation */
         @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 170, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(0, 212, 170, 0.6); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(0, 212, 170, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(0, 212, 170, 0.6);
+            }
         }
-        
+
         .pulse-box {
             animation: pulse-glow 2s ease-in-out infinite;
         }
-        
+
         /* Severity bar animation */
         @keyframes fill-bar {
-            from { width: 0%; }
-            to { width: 65%; }
+            from {
+                width: 0%;
+            }
+
+            to {
+                width: 65%;
+            }
         }
-        
+
         .severity-bar {
             animation: fill-bar 1.5s ease-out forwards;
         }
-        
+
         /* Stats counter animation */
         .stat-value {
             transition: all 0.3s ease;
         }
-        
+
         .stat-card:hover .stat-value {
             transform: scale(1.1);
             color: #00d4aa;
         }
     </style>
-  </head>
+</head>
+
 <body class="bg-background-light font-display text-white antialiased selection:bg-primary/30">
-<div class="relative flex h-screen w-full flex-col bg-background-light overflow-hidden">
-<!-- Header -->
-<header class="flex items-center justify-between glass px-6 lg:px-12 py-3">
-<button class="flex size-10 items-center justify-center rounded-full text-primary hover:bg-primary/20 transition-all duration-300">
-<span class="material-symbols-outlined text-[24px]">arrow_back_ios_new</span>
-</button>
-<h2 class="gradient-text text-lg lg:text-xl font-extrabold tracking-tight text-center flex-1">Health Analysis</h2>
-<div class="w-10"></div>
-</header>
+    <div class="relative flex h-screen w-full flex-col bg-background-light overflow-hidden">
+        <!-- Header -->
+        <header class="flex items-center justify-between glass px-6 lg:px-12 py-3">
+            <button onclick="window.location.href='second.html'"
+                class="flex size-10 items-center justify-center rounded-full text-primary hover:bg-primary/20 transition-all duration-300">
+                <span class="material-symbols-outlined text-[24px]">arrow_back_ios_new</span>
+            </button>
+            <h2 class="gradient-text text-lg lg:text-xl font-extrabold tracking-tight text-center flex-1">Health
+                Analysis</h2>
+            <div class="w-10"></div>
+        </header>
 
-<!-- Main Content -->
-<main class="flex-1 flex flex-col p-4 lg:p-6 gap-4 overflow-hidden">
-<!-- Top Section: Image + Diagnosis + Actions -->
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1">
-<!-- Image Section -->
-<div class="lg:col-span-3 relative overflow-hidden rounded-2xl glass group h-full">
-<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style='background-image: url("leaf-disease.jpg");'></div>
-<!-- Detected Overlay -->
-<div class="absolute top-3 right-3 flex items-center gap-1.5 rounded-full glass px-3 py-1.5 text-xs font-bold text-primary z-10">
-<span class="relative flex h-2 w-2">
-<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-</span>
-                    Detected
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col p-4 lg:p-6 gap-4 overflow-hidden">
+            <!-- Top Section: Image + Diagnosis + Actions -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1">
+                <!-- Image Section -->
+                <div class="lg:col-span-3 relative overflow-hidden rounded-2xl glass group h-full">
+                    <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                        style='background-image: url("leaf-disease.jpg");'></div>
+                    <!-- Detected Overlay -->
+                    <div
+                        class="absolute top-3 right-3 flex items-center gap-1.5 rounded-full glass px-3 py-1.5 text-xs font-bold text-primary z-10">
+                        <span class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                        </span>
+                        Detected
+                    </div>
+                    <!-- Bounding Box -->
+                    <div class="absolute left-1/4 top-1/4 h-16 w-16 border-2 border-primary/80 rounded-lg pulse-box">
+                        <div
+                            class="absolute -top-5 left-0 bg-gradient-to-r from-primary to-accent text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                            98%</div>
+                    </div>
                 </div>
-<!-- Bounding Box -->
-<div class="absolute left-1/4 top-1/4 h-16 w-16 border-2 border-primary/80 rounded-lg pulse-box">
-<div class="absolute -top-5 left-0 bg-gradient-to-r from-primary to-accent text-white text-[10px] font-bold px-2 py-0.5 rounded-full">98%</div>
-</div>
-</div>
 
-<!-- Diagnosis Card -->
-<div class="lg:col-span-4 flex flex-col gap-4 rounded-2xl glass p-5">
-<div class="flex items-start justify-between gap-2">
-<div>
-<p class="text-xs font-medium text-gray-400 mb-1">Diagnosis</p>
-<h1 class="text-2xl lg:text-3xl font-extrabold tracking-tight text-white">Early <span class="gradient-text">Blight</span></h1>
-<p class="text-sm text-gray-500 mt-1">Alternaria solani</p>
-</div>
-<div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/20 text-orange-400 shrink-0">
-<span class="material-symbols-outlined text-2xl">warning</span>
-</div>
-</div>
-<div class="space-y-3 flex-1">
-<div class="flex justify-between items-end">
-<span class="text-sm font-semibold text-gray-300">Severity Level</span>
-<span class="text-sm font-bold text-orange-400">Moderate (65%)</span>
-</div>
-<div class="h-3 w-full overflow-hidden rounded-full bg-white/10">
-<div class="h-full rounded-full bg-gradient-to-r from-orange-500 to-red-500 severity-bar"></div>
-</div>
-<p class="text-sm text-gray-400">Immediate intervention needed to prevent spread to healthy tissue.</p>
-</div>
-<!-- Quick Stats -->
-<div class="grid grid-cols-3 gap-2 pt-2 border-t border-white/10">
-<div class="stat-card text-center p-2">
-<span class="stat-value text-lg font-bold text-primary block">98%</span>
-<span class="text-[10px] text-gray-500">Confidence</span>
-</div>
-<div class="stat-card text-center p-2">
-<span class="stat-value text-lg font-bold text-orange-400 block">65%</span>
-<span class="text-[10px] text-gray-500">Severity</span>
-</div>
-<div class="stat-card text-center p-2">
-<span class="stat-value text-lg font-bold text-blue-400 block">2.1s</span>
-<span class="text-[10px] text-gray-500">Scan Time</span>
-</div>
-</div>
-</div>
+                <!-- Diagnosis Card -->
+                <div class="lg:col-span-4 flex flex-col gap-4 rounded-2xl glass p-5">
+                    <div class="flex items-start justify-between gap-2">
+                        <div>
+                            <p class="text-xs font-medium text-gray-400 mb-1">Diagnosis</p>
+                            <h1 class="text-2xl lg:text-3xl font-extrabold tracking-tight text-white">Early <span
+                                    class="gradient-text">Blight</span></h1>
+                            <p class="text-sm text-gray-500 mt-1">Alternaria solani</p>
+                        </div>
+                        <div
+                            class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/20 text-orange-400 shrink-0">
+                            <span class="material-symbols-outlined text-2xl">warning</span>
+                        </div>
+                    </div>
+                    <div class="space-y-3 flex-1">
+                        <div class="flex justify-between items-end">
+                            <span class="text-sm font-semibold text-gray-300">Severity Level</span>
+                            <span class="text-sm font-bold text-orange-400">Moderate (65%)</span>
+                        </div>
+                        <div class="h-3 w-full overflow-hidden rounded-full bg-white/10">
+                            <div class="h-full rounded-full bg-gradient-to-r from-orange-500 to-red-500 severity-bar">
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-400">Immediate intervention needed to prevent spread to healthy
+                            tissue.</p>
+                    </div>
+                    <!-- Quick Stats -->
+                    <div class="grid grid-cols-3 gap-2 pt-2 border-t border-white/10">
+                        <div class="stat-card text-center p-2">
+                            <span class="stat-value text-lg font-bold text-primary block">98%</span>
+                            <span class="text-[10px] text-gray-500">Confidence</span>
+                        </div>
+                        <div class="stat-card text-center p-2">
+                            <span class="stat-value text-lg font-bold text-orange-400 block">65%</span>
+                            <span class="text-[10px] text-gray-500">Severity</span>
+                        </div>
+                        <div class="stat-card text-center p-2">
+                            <span class="stat-value text-lg font-bold text-blue-400 block">2.1s</span>
+                            <span class="text-[10px] text-gray-500">Scan Time</span>
+                        </div>
+                    </div>
+                </div>
 
-<!-- Actions Column -->
-<div class="lg:col-span-5 flex flex-col gap-3">
-<h3 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-xl">verified</span>
-                    Recommended <span class="gradient-text">Actions</span>
+                <!-- Actions Column -->
+                <div class="lg:col-span-5 flex flex-col gap-3">
+                    <h3 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-xl">verified</span>
+                        Recommended <span class="gradient-text">Actions</span>
+                    </h3>
+                    <div class="grid grid-cols-1 gap-2 flex-1">
+                        <!-- Action Card 1 -->
+                        <div class="action-card group flex items-center gap-3 rounded-xl glass p-3 cursor-pointer">
+                            <div
+                                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-600/20 text-blue-400">
+                                <span class="material-symbols-outlined text-[22px]">medication_liquid</span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-sm font-bold text-white">Apply Fungicide</h4>
+                                <p class="text-xs text-gray-400 truncate">Copper-based, every 7-10 days</p>
+                            </div>
+                            <span
+                                class="material-symbols-outlined text-gray-600 group-hover:text-primary transition-colors text-lg">chevron_right</span>
+                        </div>
+                        <!-- Action Card 2 -->
+                        <div class="action-card group flex items-center gap-3 rounded-xl glass p-3 cursor-pointer">
+                            <div
+                                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 text-primary">
+                                <span class="material-symbols-outlined text-[22px]">air</span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-sm font-bold text-white">Improve Airflow</h4>
+                                <p class="text-xs text-gray-400 truncate">Prune lower leaves</p>
+                            </div>
+                            <span
+                                class="material-symbols-outlined text-gray-600 group-hover:text-primary transition-colors text-lg">chevron_right</span>
+                        </div>
+                        <!-- Action Card 3 -->
+                        <div class="action-card group flex items-center gap-3 rounded-xl glass p-3 cursor-pointer">
+                            <div
+                                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-rose-500/20 to-rose-600/20 text-rose-400">
+                                <span class="material-symbols-outlined text-[22px]">content_cut</span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-sm font-bold text-white">Remove Infected</h4>
+                                <p class="text-xs text-gray-400 truncate">Dispose debris, don't compost</p>
+                            </div>
+                            <span
+                                class="material-symbols-outlined text-gray-600 group-hover:text-primary transition-colors text-lg">chevron_right</span>
+                        </div>
+                        <!-- Action Card 4 -->
+                        <div class="action-card group flex items-center gap-3 rounded-xl glass p-3 cursor-pointer">
+                            <div
+                                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 text-yellow-400">
+                                <span class="material-symbols-outlined text-[22px]">water_drop</span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-sm font-bold text-white">Water at Base</h4>
+                                <p class="text-xs text-gray-400 truncate">Keep leaves dry</p>
+                            </div>
+                            <span
+                                class="material-symbols-outlined text-gray-600 group-hover:text-primary transition-colors text-lg">chevron_right</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section: Prevention Tips -->
+            <div class="glass rounded-2xl p-4">
+                <h3 class="text-base font-bold text-white mb-3 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-xl">tips_and_updates</span>
+                    Prevention <span class="gradient-text">Tips</span>
                 </h3>
-<div class="grid grid-cols-1 gap-2 flex-1">
-<!-- Action Card 1 -->
-<div class="action-card group flex items-center gap-3 rounded-xl glass p-3 cursor-pointer">
-<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-600/20 text-blue-400">
-<span class="material-symbols-outlined text-[22px]">medication_liquid</span>
-</div>
-<div class="flex-1 min-w-0">
-<h4 class="text-sm font-bold text-white">Apply Fungicide</h4>
-<p class="text-xs text-gray-400 truncate">Copper-based, every 7-10 days</p>
-</div>
-<span class="material-symbols-outlined text-gray-600 group-hover:text-primary transition-colors text-lg">chevron_right</span>
-</div>
-<!-- Action Card 2 -->
-<div class="action-card group flex items-center gap-3 rounded-xl glass p-3 cursor-pointer">
-<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 text-primary">
-<span class="material-symbols-outlined text-[22px]">air</span>
-</div>
-<div class="flex-1 min-w-0">
-<h4 class="text-sm font-bold text-white">Improve Airflow</h4>
-<p class="text-xs text-gray-400 truncate">Prune lower leaves</p>
-</div>
-<span class="material-symbols-outlined text-gray-600 group-hover:text-primary transition-colors text-lg">chevron_right</span>
-</div>
-<!-- Action Card 3 -->
-<div class="action-card group flex items-center gap-3 rounded-xl glass p-3 cursor-pointer">
-<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-rose-500/20 to-rose-600/20 text-rose-400">
-<span class="material-symbols-outlined text-[22px]">content_cut</span>
-</div>
-<div class="flex-1 min-w-0">
-<h4 class="text-sm font-bold text-white">Remove Infected</h4>
-<p class="text-xs text-gray-400 truncate">Dispose debris, don't compost</p>
-</div>
-<span class="material-symbols-outlined text-gray-600 group-hover:text-primary transition-colors text-lg">chevron_right</span>
-</div>
-<!-- Action Card 4 -->
-<div class="action-card group flex items-center gap-3 rounded-xl glass p-3 cursor-pointer">
-<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 text-yellow-400">
-<span class="material-symbols-outlined text-[22px]">water_drop</span>
-</div>
-<div class="flex-1 min-w-0">
-<h4 class="text-sm font-bold text-white">Water at Base</h4>
-<p class="text-xs text-gray-400 truncate">Keep leaves dry</p>
-</div>
-<span class="material-symbols-outlined text-gray-600 group-hover:text-primary transition-colors text-lg">chevron_right</span>
-</div>
-</div>
-</div>
-</div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="flex items-center gap-2 p-2 rounded-lg bg-white/5">
+                        <span class="material-symbols-outlined text-green-400 text-lg">autorenew</span>
+                        <span class="text-xs text-gray-300">Rotate crops annually</span>
+                    </div>
+                    <div class="flex items-center gap-2 p-2 rounded-lg bg-white/5">
+                        <span class="material-symbols-outlined text-blue-400 text-lg">shield</span>
+                        <span class="text-xs text-gray-300">Use resistant varieties</span>
+                    </div>
+                    <div class="flex items-center gap-2 p-2 rounded-lg bg-white/5">
+                        <span class="material-symbols-outlined text-purple-400 text-lg">straighten</span>
+                        <span class="text-xs text-gray-300">Proper plant spacing</span>
+                    </div>
+                    <div class="flex items-center gap-2 p-2 rounded-lg bg-white/5">
+                        <span class="material-symbols-outlined text-orange-400 text-lg">grass</span>
+                        <span class="text-xs text-gray-300">Apply mulch layer</span>
+                    </div>
+                </div>
+            </div>
+        </main>
 
-<!-- Bottom Section: Prevention Tips -->
-<div class="glass rounded-2xl p-4">
-<h3 class="text-base font-bold text-white mb-3 flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-xl">tips_and_updates</span>
-                Prevention <span class="gradient-text">Tips</span>
-            </h3>
-<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-<div class="flex items-center gap-2 p-2 rounded-lg bg-white/5">
-<span class="material-symbols-outlined text-green-400 text-lg">autorenew</span>
-<span class="text-xs text-gray-300">Rotate crops annually</span>
-</div>
-<div class="flex items-center gap-2 p-2 rounded-lg bg-white/5">
-<span class="material-symbols-outlined text-blue-400 text-lg">shield</span>
-<span class="text-xs text-gray-300">Use resistant varieties</span>
-</div>
-<div class="flex items-center gap-2 p-2 rounded-lg bg-white/5">
-<span class="material-symbols-outlined text-purple-400 text-lg">straighten</span>
-<span class="text-xs text-gray-300">Proper plant spacing</span>
-</div>
-<div class="flex items-center gap-2 p-2 rounded-lg bg-white/5">
-<span class="material-symbols-outlined text-orange-400 text-lg">grass</span>
-<span class="text-xs text-gray-300">Apply mulch layer</span>
-</div>
-</div>
-</div>
-</main>
-
-<!-- Footer -->
-<footer class="glass p-4 lg:px-8">
-<div class="flex gap-3 max-w-4xl mx-auto">
-<button id="downloadReport" class="flex-1 flex items-center justify-center gap-2 rounded-full glass px-4 py-3 text-sm font-bold text-primary hover:bg-primary/20 transition-all duration-300 active:scale-95">
-<span class="material-symbols-outlined text-[20px]">download</span>
+        <!-- Footer -->
+        <footer class="glass p-4 lg:px-8">
+            <div class="flex gap-3 max-w-4xl mx-auto">
+                <button id="downloadReport"
+                    class="flex-1 flex items-center justify-center gap-2 rounded-full glass px-4 py-3 text-sm font-bold text-primary hover:bg-primary/20 transition-all duration-300 active:scale-95">
+                    <span class="material-symbols-outlined text-[20px]">download</span>
                     Report
                 </button>
-<a href="second.html" class="flex-[2] flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-accent px-4 py-3 text-sm font-bold text-white btn-glow">
-<span class="material-symbols-outlined text-[20px]">add_a_photo</span>
+                <a href="second.html"
+                    class="flex-[2] flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-accent px-4 py-3 text-sm font-bold text-white btn-glow">
+                    <span class="material-symbols-outlined text-[20px]">add_a_photo</span>
                     New Scan
                 </a>
-</div>
-</footer>
-</div>
+            </div>
+        </footer>
+    </div>
 
-<!-- JavaScript for Download Report -->
-<script>
-document.getElementById('downloadReport').addEventListener('click', function() {
-    // Create report content
-    const reportContent = `
+    <!-- JavaScript for Download Report -->
+    <script>
+        document.getElementById('downloadReport').addEventListener('click', function () {
+            // Create report content
+            const reportContent = `
 ========================================
         AGRIHEALTH ANALYSIS REPORT
 ========================================
@@ -359,16 +409,18 @@ Report Generated by AgriHealth AI
 ========================================
     `;
 
-    // Create blob and download
-    const blob = new Blob([reportContent], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'AgriHealth_Report_' + new Date().toISOString().split('T')[0] + '.txt';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-});
-</script>
-</body></html>
+            // Create blob and download
+            const blob = new Blob([reportContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'AgriHealth_Report_' + new Date().toISOString().split('T')[0] + '.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+
+</html>
