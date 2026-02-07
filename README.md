@@ -1,6 +1,6 @@
-# Plant Health Detection System
+# MediCrop - Plant Health Detection System
 
-A deep learning-based agricultural health detection system that classifies plant diseases and pest infestations using transfer learning with ResNet50.
+A deep learning-based agricultural health detection system that helps identify crop diseases and pest damage using images of plant leaves. The system uses transfer learning with ResNet50 trained on open agricultural datasets to classify plant health conditions, estimate severity, and provide actionable recommendations.
 
 ## Overview
 
@@ -8,7 +8,8 @@ This system provides:
 - **50-class classification**: 38 plant disease classes + 12 pest categories
 - **Transfer learning**: Leverages pretrained ResNet50 (ImageNet weights)
 - **Severity estimation**: Confidence-based severity assessment (Mild/Moderate/Severe)
-- **Ready for deployment**: Exportable model in `.keras` and `.h5` formats for Flask/FastAPI integration
+- **REST API**: Flask backend for frontend integration
+- **Ready for deployment**: Exportable model in `.h5` format with comprehensive API documentation
 
 ## Dataset Structure
 
@@ -31,6 +32,17 @@ IIT gandhinagar/
 
 ### 1. Install Dependencies
 
+**For macOS (Apple Silicon M1/M2/M3):**
+```bash
+# Create virtual environment with Python 3.11
+python3.11 -m venv .venv
+source .venv/bin/activate
+
+# Run installation script
+./install_macos.sh
+```
+
+**For other systems:**
 ```bash
 pip install -r requirements.txt
 ```
@@ -44,23 +56,41 @@ python data_loader.py
 ### 3. Train Model
 
 ```bash
-# Full training (30 epochs)
+# Full training (30 epochs, ~2-4 hours)
 python train.py
 
-# Quick test (2 epochs)
+# Quick test (2 epochs, ~10 minutes)
 python train.py --epochs 2
 
 # Custom configuration
 python train.py --epochs 50 --batch-size 64
 ```
 
-### 4. Make Predictions
+### 4. Start API Server
 
+```bash
+# Install API dependencies
+pip install -r requirements-api.txt
+
+# Start Flask server
+python app.py
+```
+
+The API will be available at `http://localhost:5000`
+
+### 5. Make Predictions
+
+**Via API:**
+```bash
+curl -X POST -F "image=@path/to/leaf.jpg" http://localhost:5000/predict
+```
+
+**Programmatically:**
 ```python
 from utils import load_model, load_class_mapping, predict_single_image
 
 # Load trained model
-model = load_model('models/plant_health_model.keras')
+model = load_model('models/plant_health_model.h5')
 class_mapping = load_class_mapping('models/class_mapping.json')
 
 # Predict on new image
@@ -104,7 +134,7 @@ Training augmentation includes:
 - Horizontal flip
 - Normalization: [0, 1] rescaling
 
-## ⚕️ Severity Estimation
+## Severity Estimation
 
 Severity is estimated based on prediction confidence:
 
@@ -124,10 +154,16 @@ plant_health_detection/
 ├── model.py              # Model architecture and severity estimation
 ├── utils.py              # Helper functions and visualization
 ├── train.py              # Main training script
+├── app.py                # Flask REST API
+├── test_api.py           # API testing script
 ├── requirements.txt      # Python dependencies
+├── requirements-api.txt  # API dependencies
+├── requirements-macos.txt # macOS-specific dependencies
+├── install_macos.sh      # macOS installation script
+├── API_DOCUMENTATION.md  # Complete API documentation
+├── API_QUICKSTART.md     # Quick API reference
 ├── README.md            # This file
 └── models/              # Saved models and outputs
-    ├── plant_health_model.keras
     ├── plant_health_model.h5
     ├── class_mapping.json
     ├── class_indices.json
@@ -156,12 +192,20 @@ Edit `config.py` to customize:
 - **TensorBoard**: Visualization with TensorBoard
 
 **Outputs:**
-- Trained model (`.keras` and `.h5`)
+- Trained model (`.h5` format)
 - Training history plots
 - Class mappings (JSON)
 - Training logs (CSV)
 
-## Testing Individual Modules
+## API Endpoints
+
+- `GET /` - API documentation
+- `GET /health` - Health check
+- `GET /classes` - List all disease/pest classes
+- `GET /info` - Model information
+- `POST /predict` - Upload image and get prediction
+
+See [`API_DOCUMENTATION.md`](API_DOCUMENTATION.md) for complete API reference.
 
 ## Expected Performance
 
@@ -187,11 +231,15 @@ Based on PlantVillage benchmarks:
 - Add more augmentation
 - Collect more training data
 
+**macOS Installation Issues**
+- See [`INSTALL_MACOS.md`](INSTALL_MACOS.md) for detailed troubleshooting
+
 ## Technologies Used
 
 - **TensorFlow 2.x**: Deep learning framework
 - **Keras**: High-level neural networks API
 - **ResNet50**: Pretrained CNN architecture
+- **Flask**: REST API framework
 - **NumPy & Pandas**: Data manipulation
 - **Matplotlib & Seaborn**: Visualization
 - **OpenCV & Pillow**: Image processing
